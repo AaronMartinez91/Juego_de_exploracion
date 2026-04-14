@@ -1,0 +1,200 @@
+namespace B2ACT2Juego_de_exploracion;
+
+public partial class GamePage : ContentPage
+{
+    // El jugador empieza siempre en la habitación 1
+    int habitacion = 1;
+
+    // Clave: habitación, Valor: array [N, S, E, O] (-1 = no hay salida)
+    Dictionary<int, int[]> mapa = new Dictionary<int, int[]>
+    {
+        { 1,  new int[] {2, -1, -1, -1}},  // Porche
+        { 2,  new int[] {3, 1, -1, -1}},  // Vestíbulo
+        { 3,  new int[] {-1, 2, 8, 4}},  // Salón
+        { 4,  new int[] {-1, 5, 3, -1}},  // Pasillo librería
+        { 5,  new int[] {4, 6, -1, 7}},  // Librería
+        { 6,  new int[] {5, -1, -1, -1}},  // Despacho
+        { 7,  new int[] {-1, -1, 5, -1}},  // Cámara secreta
+        { 8,  new int[] {-1, 10, 9, 3}},  // Comedor
+        { 9,  new int[] {-1, -1, -1, 8 }},  // Cocina
+        { 10, new int[] {8, -1, 11, -1}},  // Pasillo dormitorio
+        { 11, new int[] {-1, 13, 12, 10}},  // Dormitorio
+        { 12, new int[] {-1, -1, -1, 11}},  // Balcón
+        { 13, new int[] {11, -1, -1, -1}}   // Lavabo
+    };
+
+    // Lista de nombres de los archivos para las imágenes de las habitaciones
+    string[] imagenesHabitacion = 
+    {
+        "",                          
+        "h01_porche.png",
+        "h02_vestibulo.png",
+        "h03_salon.png",
+        "h04_pasillo_libreria.png",
+        "h05_libreria.png",
+        "h06_despacho.png",
+        "h07_camara_secreta.png",
+        "h08_comedor.png",
+        "h09_cocina.png",
+        "h10_pasillo_dormitorio.png",
+        "h11_dormitorio.png",
+        "h12_balcon.png",
+        "h13_lavabo.png"
+    };
+
+    // Lista de los nombres de las habitaciones que se muestran en el cuadro de texto
+    string[] nombresHabitacion = 
+    {
+        "",
+        "el porche",
+        "el vestíbulo",
+        "el salón",
+        "el pasillo hacia la librería",
+        "la librería",
+        "el despacho",
+        "la cámara secreta",
+        "el comedor",
+        "la cocina",
+        "el pasillo hacia el dormitorio",
+        "el dormitorio",
+        "el balcón",
+        "el lavabo"
+    };
+
+    // Objetivo (1/2/3), el juego empieza por el primero, evidentemente
+    int objetivo = 1;
+
+    // jugador 0=llave, 1=libro, 2=gato, 3=pluma
+    int itemJugador = -1;
+
+    // personajes (el nº coincide con el de la lista de habitaciones, representa dónde están)
+    int habTio = 6;
+    int habTia = 11;
+    int habCocinero = 9;
+
+    // ítems (habitación en la que están)
+    int habLlave = -1;
+    int habLibro = -1;
+    int habGato = -1;
+    int habPluma = -1;
+
+    // condiciones
+    bool libroVisto = false;
+    bool llaveVista = false;
+    bool habladoCocinero = false;
+    bool tioEscribiendo = false;
+    bool pajaroVisto = false;
+    bool puertaCamaraAbierta = false;
+
+    public GamePage()
+	{
+		InitializeComponent();
+        ActualizarVista();
+	}
+
+    void ActualizarVista()
+    {
+        // Cambiar imagen de la habitación
+        imgHabitacion.Source = imagenesHabitacion[habitacion];
+
+        // Mostrar botones de dirección
+        btnNorte.IsVisible = mapa[habitacion][0] != -1;
+        btnSur.IsVisible = mapa[habitacion][1] != -1;
+        btnEste.IsVisible = mapa[habitacion][2] != -1;
+        btnOeste.IsVisible = mapa[habitacion][3] != -1;
+
+        // Resetear visibilidad de todo lo opcional antes de comprobar
+        imgPersonaje.IsVisible = false;
+        imgItemHabitacion.IsVisible = false;
+        imgItemJugador.IsVisible = false;
+
+        // Mostrar texto de dónde se encuentra el jugador.
+        infoText.Text = "Entras en " + nombresHabitacion[habitacion] + ".";
+
+        // mostrar personaje en las habitaciones
+        if(habTio == habitacion)
+        {
+            imgPersonaje.Source = "p02_senyor.png";
+            imgPersonaje.IsVisible = true;
+        }
+        if(habTia == habitacion)
+        {
+            imgPersonaje.Source = "p01_senyora.png";
+            imgPersonaje.IsVisible = true;
+        }
+        if(habCocinero == habitacion)
+        {
+            imgPersonaje.Source = "p03_cocinero.png";
+            imgPersonaje.IsVisible = true;
+        }
+
+        // mostrar items en las habitaciones
+        if(habLlave == habitacion)
+        {
+            imgItemHabitacion.Source = "i01_llave.png";
+            imgItemHabitacion.IsVisible = true;
+        }
+        if(habLibro == habitacion)
+        {
+            imgItemHabitacion.Source = "i04_libro.png";
+            imgItemHabitacion.IsVisible = true;
+        }
+        if(habGato == habitacion)
+        {
+            imgItemHabitacion.Source = "i02_gato.png";
+            imgItemHabitacion.IsVisible = true;
+        }
+        if(habPluma == habitacion)
+        {
+            imgItemHabitacion.Source = "i03_pluma.png";
+            imgItemHabitacion.IsVisible = true;
+        }
+
+        // mostrar item que lleva el jugador
+        if(itemJugador == 0)
+        {
+            imgItemJugador.Source = "i01_llave.png";
+            imgItemJugador.IsVisible = true;
+        }
+        if(itemJugador == 1)
+        {
+            imgItemJugador.Source = "i04_libro.png";
+            imgItemJugador.IsVisible = true;
+        }
+        if(itemJugador == 2)
+        {
+            imgItemJugador.Source = "i02_gato.png";
+            imgItemJugador.IsVisible = true;
+        }
+        if(itemJugador == 3)
+        {
+            imgItemJugador.Source = "i03_pluma.png";
+            imgItemJugador.IsVisible = true;
+        }
+
+    }
+
+    void btnNorte_Clicked(object sender, EventArgs e)
+    {
+        habitacion = mapa[habitacion][0];
+        ActualizarVista();
+    }
+
+    void btnSur_Clicked(object sender, EventArgs e)
+    {
+        habitacion = mapa[habitacion][1];
+        ActualizarVista();
+    }
+
+    void btnEste_Clicked(object sender, EventArgs e)
+    {
+        habitacion = mapa[habitacion][2];
+        ActualizarVista();
+    }
+
+    void btnOeste_Clicked(object sender, EventArgs e)
+    {
+        habitacion = mapa[habitacion][3];
+        ActualizarVista();
+    }
+}

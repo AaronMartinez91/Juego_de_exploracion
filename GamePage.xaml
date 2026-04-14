@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="B2ACT2Juego_de_exploracion.GamePage"
+             Title="GamePage">
+    <!-- Defino la parte de espacio que ocupa cada hijo el en grid -->
+    <Grid RowDefinitions="3*, *, 1*, 2*"
+          Padding="10"
+          RowSpacing="8">
+
+        <!-- Grid que contiene la imagen grande de la habitación + las dos pequeñas (si hay objeto/persona) -->
+        <Grid Grid.Row="0">
+
+            <Image Source="h01_porche.png"
+                   Aspect="AspectFill"
+                   x:Name="imgHabitacion"/>
+
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   VerticalOptions="End"
+                                   Spacing="8"
+                                   Padding="0,0,8,8">
+
+                <Image x:Name="imgPersonaje"
+                       Source="p01_senyora.png"
+                       WidthRequest="60"
+                       HeightRequest="60"
+                       IsVisible="False"/>
+
+                <Image x:Name="imgItemHabitacion"
+                       Source="i01_llave.png"
+                       WidthRequest="60"
+                       HeightRequest="60" 
+                       IsVisible="False"/>
+
+            </HorizontalStackLayout>
+
+        </Grid>
+
+        <!-- Border de salida de texto con scroll y tamaño fijo -->
+        <Border Grid.Row="1"
+                Stroke="Gray"
+                StrokeThickness="1"
+                Padding="8">
+            <ScrollView>
+                <Label x:Name="infoText"
+                       Text=""/>
+            </ScrollView>
+        </Border>
+
+        <!-- Grid de los 4 botones de acción con imágenes (iconos) -->
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*, *, *, *"
+              ColumnSpacing="4">
+
+            <Button Grid.Column="0"
+                    x:Name="btnObservar"
+                    ImageSource="magnifying_glass.png"
+                    BackgroundColor="Black"
+                    HeightRequest="60"
+                    CornerRadius="4"/>
+
+            <Button Grid.Column="1"
+                    x:Name="btnHablar"
+                    ImageSource="talk.png"
+                    BackgroundColor="Black"
+                    HeightRequest="60"
+                    CornerRadius="4"/>
+
+            <Button Grid.Column="2"
+                    x:Name="btnRecoger"
+                    ImageSource="grab.png"
+                    BackgroundColor="Black"
+                    HeightRequest="60"
+                    CornerRadius="4"/>
+
+            <Button Grid.Column="3"
+                    x:Name="btnUsar"
+                    ImageSource="use.png"
+                    BackgroundColor="Black"
+                    HeightRequest="60"
+                    CornerRadius="4"/>
+
+        </Grid>
+
+        <!-- Grid de 2 columnas: una con la cruceta de dirección, la otra con el ítem poseído -->
+        <Grid Grid.Row="3"
+              ColumnDefinitions="*, *">
+
+            <Grid Grid.Column="0"
+                  RowDefinitions="*, *, *"
+                  ColumnDefinitions="*, *, *"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center"
+                  RowSpacing="4"
+                  ColumnSpacing="4">
+
+                <ContentView Grid.Row="0" Grid.Column="1">
+                    <Button x:Name="btnNorte"
+                            ImageSource="plain_arrow_down.png"
+                            BackgroundColor="Black"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            Rotation="180"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            IsVisible="False"
+                            Clicked="btnNorte_Clicked"/>
+                </ContentView>
+
+                <ContentView Grid.Row="1" Grid.Column="0">
+                    <Button x:Name="btnOeste"
+                            ImageSource="plain_arrow_down.png"
+                            BackgroundColor="Black"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            Rotation="90"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            IsVisible="False"
+                            Clicked="btnOeste_Clicked"/>
+                </ContentView>
+
+                <ContentView Grid.Row="1" Grid.Column="2">
+                    <Button x:Name="btnEste"
+                            ImageSource="plain_arrow_down.png"
+                            BackgroundColor="Black"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            Rotation="270"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            IsVisible="False"
+                            Clicked="btnEste_Clicked"/>
+                </ContentView>
+
+                <ContentView Grid.Row="2" Grid.Column="1">
+                    <Button x:Name="btnSur"
+                            ImageSource="plain_arrow_down.png"
+                            BackgroundColor="Black"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            Rotation="0"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            IsVisible="False"
+                            Clicked="btnSur_Clicked"/>
+                </ContentView>
+
+            </Grid>
+
+            <Image Grid.Column="1"
+                   x:Name="imgItemJugador"
+                   Source="i01_llave.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="False"/>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
