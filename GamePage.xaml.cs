@@ -12,7 +12,7 @@ public partial class GamePage : ContentPage
         { 2,  new int[] {3, 1, -1, -1}},  // Vestíbulo
         { 3,  new int[] {-1, 2, 8, 4}},  // Salón
         { 4,  new int[] {-1, 5, 3, -1}},  // Pasillo librería
-        { 5,  new int[] {4, 6, -1, 7}},  // Librería
+        { 5,  new int[] {4, 6, -1, -1}},  // Librería
         { 6,  new int[] {5, -1, -1, -1}},  // Despacho
         { 7,  new int[] {-1, -1, 5, -1}},  // Cámara secreta
         { 8,  new int[] {-1, 10, 9, 3}},  // Comedor
@@ -85,12 +85,23 @@ public partial class GamePage : ContentPage
     bool tioEscribiendo = false;
     bool pajaroVisto = false;
     bool puertaCamaraAbierta = false;
+    bool puertaCamaraVista = false;
 
     public GamePage()
 	{
-		InitializeComponent();
-        ActualizarVista();
+		InitializeComponent();        
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        ActualizarVista();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+    }
 
     void ActualizarVista()
     {
@@ -102,6 +113,12 @@ public partial class GamePage : ContentPage
         btnSur.IsVisible = mapa[habitacion][1] != -1;
         btnEste.IsVisible = mapa[habitacion][2] != -1;
         btnOeste.IsVisible = mapa[habitacion][3] != -1;
+
+        // Casos especiales
+        if (habitacion == 5 && puertaCamaraVista)
+        {
+            btnOeste.IsVisible = true;
+        }
 
         // Resetear visibilidad de todo lo opcional antes de comprobar
         imgPersonaje.IsVisible = false;
@@ -174,6 +191,8 @@ public partial class GamePage : ContentPage
 
     }
 
+    // Botones de direcciones
+
     void btnNorte_Clicked(object sender, EventArgs e)
     {
         habitacion = mapa[habitacion][0];
@@ -194,7 +213,69 @@ public partial class GamePage : ContentPage
 
     void btnOeste_Clicked(object sender, EventArgs e)
     {
-        habitacion = mapa[habitacion][3];
-        ActualizarVista();
+        if(habitacion == 5 && !puertaCamaraAbierta)
+        {
+            infoText.Text = "La puerta está cerrada con llave.";
+        }
+        else
+        {
+            habitacion = mapa[habitacion][3];
+            ActualizarVista();
+        }
+            
+    }
+
+    // Botones de acciones
+    void btnObservar_Clicked(object sender, EventArgs e)
+    {
+        if(habitacion == 6)
+        {
+            infoText.Text = "Observas una llave cerca de tu tío";
+            llaveVista = true;
+            habLlave = 6;
+
+            // la muestro al instante de observar, no espero a actualizar página
+            imgItemHabitacion.Source = "i01_llave.png";
+            imgItemHabitacion.IsVisible = true;
+        }
+        else if(habitacion == 5 && !puertaCamaraVista)
+        {
+            infoText.Text = "Observas una puerta oculta... ¿Podría ser una cámara secreta?";
+            puertaCamaraVista = true;
+            btnOeste.IsVisible = true;
+        }
+        else
+        {
+            infoText.Text = "No observas nada relevante";
+        }
+    }    
+    void btnHablar_Clicked(object sender, EventArgs e)
+    {
+        if (habitacion == 6)
+        {
+            if(!habladoCocinero)
+            {
+                infoText.Text = "Tu tío te saluda efusivamente, su contacto excesivo te pone un poco nervioso, pero no le das importancia.";
+            }
+            else
+            {
+                infoText.Text = "Tío: ¿Buscas el libro de recetas? Diría que la última vez que lo vi estaba en el salón.";
+            }
+        }
+    }    
+    void btnRecoger_Clicked(object sender, EventArgs e)
+    {
+        if(habitacion == 6 && llaveVista)
+        {
+            infoText.Text = "No puedo robar la llave mientras él esté aquí."; 
+        }
+        else
+        {
+            infoText.Text = "No hay nada que recoger. Tal vez deberías probar a observar.";
+        }
+    }    
+    void btnUsar_Clicked(object sender, EventArgs e)
+    {
+
     }
 }

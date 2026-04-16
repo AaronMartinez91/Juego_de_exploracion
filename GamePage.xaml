@@ -57,28 +57,32 @@
                     ImageSource="magnifying_glass.png"
                     BackgroundColor="Black"
                     HeightRequest="60"
-                    CornerRadius="4"/>
+                    CornerRadius="4"
+                    Clicked="btnObservar_Clicked"/>
 
             <Button Grid.Column="1"
                     x:Name="btnHablar"
                     ImageSource="talk.png"
                     BackgroundColor="Black"
                     HeightRequest="60"
-                    CornerRadius="4"/>
+                    CornerRadius="4"
+                    Clicked="btnHablar_Clicked"/>
 
             <Button Grid.Column="2"
                     x:Name="btnRecoger"
                     ImageSource="grab.png"
                     BackgroundColor="Black"
                     HeightRequest="60"
-                    CornerRadius="4"/>
+                    CornerRadius="4"
+                    Clicked="btnRecoger_Clicked"/>
 
             <Button Grid.Column="3"
                     x:Name="btnUsar"
                     ImageSource="use.png"
                     BackgroundColor="Black"
                     HeightRequest="60"
-                    CornerRadius="4"/>
+                    CornerRadius="4"
+                    Clicked="btnUsar_Clicked"/>
 
         </Grid>
 
