@@ -91,6 +91,7 @@ public partial class GamePage : ContentPage
     bool puertaCamaraAbierta = false;
     bool gatoUsado = false;
     bool tioHabladoLibro = false;
+    bool habladoTioPluma = false;
 
     public GamePage()
 	{
@@ -212,9 +213,14 @@ public partial class GamePage : ContentPage
 
     void btnEste_Clicked(object sender, EventArgs e)
     {
-        if(habitacion == 10 && objetivo == 1 && !comidaHecha)
+        if(habitacion == 10 && objetivo == 1 && !comidaHecha && !tiaVista)
         {
             infoText.Text = "Tu tía sigue durmiendo al otro lado. Un sueño profundo, casi antinatural. En tu familia siempre dijeron que solo había dos cosas capaces de arrancarla de la cama: un incendio y la hora de comer. Rezas para que sea la segunda.";
+            tiaVista = true;
+        }
+        else if (habitacion == 10 && objetivo == 1 && !comidaHecha && tiaVista)
+        {
+            infoText.Text = "Tu tía sigue durmiendo. No va a salir por su propia voluntad.";
         }
         else if (habitacion == 10 && objetivo == 1 && comidaHecha)
         {
@@ -249,17 +255,31 @@ public partial class GamePage : ContentPage
     // Botones de acciones
     void btnObservar_Clicked(object sender, EventArgs e)
     {
-        if(habitacion == 6 && objetivo == 1)
+        // quito la llave en el primer caso porque es redundante y no es realmente necesaria hasta el 3er objetivo
+
+        //if(habitacion == 6 && objetivo == 1)
+        //{
+        //    infoText.Text = "Observas una llave cerca de tu tío. Está demasiado atento como para poder cogerla.";
+        //    llaveVista = true;
+        //    habLlave = 6;
+        //    imgItemHabitacion.Source = "i01_llave.png";
+        //    imgItemHabitacion.IsVisible = true;
+        //}
+        if (habitacion == 6 && objetivo == 2 && !llaveVista)
         {
-            infoText.Text = "Observas una llave cerca de tu tío";
+            infoText.Text = "Mientras echas un vistazo por la habitación reparas en una llave cerca de tu tío. Al darte cuenta de que la estás mirando, él levanta la vista y te sostiene la mirada un instante de más. Sonríe. Apartas los ojos.";
             llaveVista = true;
             habLlave = 6;
             imgItemHabitacion.Source = "i01_llave.png";
             imgItemHabitacion.IsVisible = true;
         }
-        else if (habitacion == 6 && objetivo == 2 && habLlave == 6)
+        else if (habitacion == 6 && objetivo == 2 && llaveVista && habLlave == 6 && !tioEscribiendo)
         {
             infoText.Text = "La llave sigue ahí. Si consiguiera distraerlo lo suficiente...";
+        }
+        else if (habitacion == 6 && objetivo == 2 && llaveVista && habLlave == 6 && tioEscribiendo)
+        {
+            infoText.Text = "El tío está absorto escribiendo. La llave está al alcance de tu mano.";
         }
         else if(habitacion == 5 && !puertaCamaraVista)
         {
@@ -270,7 +290,6 @@ public partial class GamePage : ContentPage
         else if (habitacion == 10 && !comidaHecha && objetivo == 1 && !tiaVista)
         {
             infoText.Text = "Acercas el ojo a la cerradura. Un error que lamentarás el resto de tu vida. Tu tía se remueve entre las sábanas y el pijama no deja demasiado a la imaginación. Cierras los ojos, pero ya es demasiado tarde. Algunas imágenes no se pueden desver.";
-            tiaVista = true;
         }
         else if (habitacion == 10 && !comidaHecha && objetivo == 1 && tiaVista)
         {
@@ -302,7 +321,7 @@ public partial class GamePage : ContentPage
         {
             infoText.Text = "Hay demasiados libros aquí. El cocinero no recordaba el título exacto y tú tampoco sabes por dónde empezar. Quizás alguien de la casa sepa algo más.";
         }
-        else if (habitacion == 8 && objetivo == 2 && !gatoVisto)
+        else if (habitacion == 8 && objetivo == 2 && !gatoVisto && habladoTioPluma)
         {
             infoText.Text = "Hay un gato bajo la silla de tu tía, inmóvil, con los ojos clavados en el plato. O es muy valiente o muy estúpido. Probablemente lo segundo.";
             gatoVisto = true;
@@ -315,9 +334,9 @@ public partial class GamePage : ContentPage
             infoText.Text = "Posado en la barandilla hay un pájaro gordo y confiado que no parece tener ninguna prisa por irse. Una presa fácil para cualquier depredador con las agallas suficientes.";
             pajaroVisto = true;
         }
-        else if (habitacion == 12 && pajaroVisto && itemJugador != 2 && !gatoUsado)
+        else if (habitacion == 12 && pajaroVisto && !habladoTioPluma && !gatoUsado)
         {
-            infoText.Text = "El pájaro sigue en la barandilla, ajeno a todo. Necesitas algo con lo que atraparlo.";
+            infoText.Text = "El pájaro sigue en la barandilla. No parece tener ninguna prisa por irse.";
         }
         else if (habitacion == 12 && pajaroVisto && itemJugador == 2 && !gatoUsado)
         {
@@ -347,22 +366,36 @@ public partial class GamePage : ContentPage
             else
             {
                 infoText.Text = "Tu tío entorna los ojos. \"¿Un libro de recetas? Creo que vi uno hace poco... en el salón, sobre la mesa. No tiene pérdida.\" Lo dice con demasiada naturalidad para alguien que supuestamente no sabía nada.";
+                tioHabladoLibro = true;
             }
         }
         else if (habitacion == 6 && objetivo == 2)
         {
-            if (!tioEscribiendo)
+            if (!llaveVista)
             {
-                infoText.Text = "Tu tío tamborilea los dedos sobre el escritorio. \"Sobrino... ¿no tendrás algo con qué escribir? He buscado por todos lados y no encuentro ni un maldito bolígrafo.\" Su sonrisa no desaparece en ningún momento. Nunca desaparece.";
+                infoText.Text = "Tu tío está absorto en sus pensamientos, tamborileando los dedos sobre el escritorio. No repara en ti.";
+            }
+            else if(!tioEscribiendo)
+            {
+                infoText.Text = "Tu tío sonríe. \"Ah, la llavecita...\" La tapa con la mano sin dejar de mirarte. \"No es nada importante.\" Hace una pausa. \"Oye, ¿no tendrás algo con qué escribir? No encuentro ni un bolígrafo en esta casa.\"";
+                habladoTioPluma = true;
             }
             else
             {
                 infoText.Text = "Tu tío escribe concentrado, inclinado sobre el papel. No levanta la vista. Sus hombros se mueven de forma rítmica. Prefieres no saber qué está escribiendo.";
             }
         }
+        else if (habitacion == 6 && objetivo == 3)
+        {
+            infoText.Text = "Tu tío sigue escribiendo, completamente ajeno a todo. No levanta la vista. Mejor así.";
+        }
         else if (habitacion == 9 && objetivo == 1)
         {
-            if (!comidaHecha)
+            if (!tiaVista)
+            {
+                infoText.Text = "El cocinero está atareado entre los fogones. Apenas levanta la vista para reconocer tu presencia. Parece concentrado en lo suyo.";
+            }
+            else if (!comidaHecha)
             {
                 infoText.Text = "Cocinero: Llevo horas intentando recordar el ingrediente especial de esta receta... Sin él no puedo terminar el plato. Y sin el plato... mejor ni pensarlo.";
                 habladoCocinero = true;
@@ -387,11 +420,11 @@ public partial class GamePage : ContentPage
     }    
     void btnRecoger_Clicked(object sender, EventArgs e)
     {
-        if(habitacion == 6 && llaveVista && !tioEscribiendo)
+        if(habitacion == 6 && llaveVista && !tioEscribiendo && habLlave == 6)
         {
             infoText.Text = "No puedo robar la llave mientras él esté aquí."; 
         }
-        else if(habitacion == 6 && llaveVista && tioEscribiendo)
+        else if(habitacion == 6 && llaveVista && tioEscribiendo && habLlave == 6)
         {
             habLlave = -1;
             itemJugador = 0;
@@ -420,7 +453,7 @@ public partial class GamePage : ContentPage
             ActualizarVista();
             infoText.Text = "Coges la pluma del suelo. Es lo único que queda de lo que acaba de pasar aquí.";
         }
-        else if (habitacion == 12 && pajaroVisto && habPluma != 12 && itemJugador != 3)
+        else if (habitacion == 12 && pajaroVisto && habPluma != 12 && itemJugador != 3 && habladoTioPluma)
         {
             infoText.Text = "No puedes recoger al pájaro así como así. Necesitas algo que lo distraiga.";
         }
