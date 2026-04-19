@@ -82,6 +82,7 @@ public partial class GamePage : ContentPage
     bool libroVisto = false;
     bool llaveVista = false;
     bool habladoCocinero = false;
+    bool comidaHecha = false;
     bool tioEscribiendo = false;
     bool pajaroVisto = false;
     bool puertaCamaraAbierta = false;
@@ -207,15 +208,28 @@ public partial class GamePage : ContentPage
 
     void btnEste_Clicked(object sender, EventArgs e)
     {
-        habitacion = mapa[habitacion][2];
-        ActualizarVista();
+        // El objetivo 1 termina cuando se cumpla la condición de mover a la tía, por lo que no necesito booleano aquí
+        if(habitacion == 10 && objetivo == 1)
+        {
+            infoText.Text = "Tu tía sigue durmiendo al otro lado. Un sueño profundo, casi antinatural. En tu familia siempre dijeron que solo había dos cosas capaces de arrancarla de la cama: un incendio y la hora de comer. Rezas para que sea la segunda.";
+        }
+        else
+        {
+            habitacion = mapa[habitacion][2];
+            ActualizarVista();
+        }
     }
 
     void btnOeste_Clicked(object sender, EventArgs e)
     {
-        if(habitacion == 5 && !puertaCamaraAbierta)
+        if(habitacion == 5 && puertaCamaraVista && !puertaCamaraAbierta)
         {
             infoText.Text = "La puerta está cerrada con llave.";
+        }
+        else if (habitacion == 5 && puertaCamaraAbierta)
+        {
+            habitacion = 7;
+            ActualizarVista();
         }
         else
         {
@@ -244,6 +258,32 @@ public partial class GamePage : ContentPage
             puertaCamaraVista = true;
             btnOeste.IsVisible = true;
         }
+        else if (habitacion == 10 && !comidaHecha && objetivo == 1)
+        {
+            infoText.Text = "Acercas el ojo a la cerradura. Un error que lamentarás el resto de tu vida. Tu tía se remueve entre las sábanas y el pijama no deja demasiado a la imaginación. Cierras los ojos, pero ya es demasiado tarde. Algunas imágenes no se pueden desver.";
+        }
+        else if (habitacion == 10 && comidaHecha && objetivo == 1)
+        {
+            infoText.Text = "La puerta del dormitorio se abre de golpe. Tu tía sale disparada por el pasillo en dirección al comedor, con el pijama ondeando al viento de forma que nunca podrás olvidar. Grita algo sobre el cocido. No levantas la vista del suelo.";
+            habTia = 8;
+            objetivo = 2;
+        }
+        else if (habitacion == 2)
+        {
+            infoText.Text = "Sobre la chimenea cuelga un enorme retrato al óleo de tu tío. Está pintado con una sonrisa demasiado amplia, los ojos demasiado abiertos. El pintor debió de sentirse muy incómodo durante las sesiones.";
+        }
+        else if (habitacion == 4)
+        {
+            infoText.Text = "El pasillo huele a algo que no consigues identificar. Dulzón, pero con un fondo que te revuelve el estómago. Bajas la vista y ves que la moqueta tiene manchas oscuras en varios puntos. Alguien intentó limpiarlas. No del todo bien.";
+        }
+        else if (habitacion == 3 && !libroVisto)
+        {
+            infoText.Text = "Ves un libro de recetas sobre la mesa. Qué cosa tan mundana en una mansión tan... peculiar.";
+            libroVisto = true;
+            habLibro = 3;
+            imgItemHabitacion.Source = "i04_libro.png";
+            imgItemHabitacion.IsVisible = true;
+        }
         else
         {
             infoText.Text = "No observas nada relevante";
@@ -262,12 +302,28 @@ public partial class GamePage : ContentPage
                 infoText.Text = "Tío: ¿Buscas el libro de recetas? Diría que la última vez que lo vi estaba en el salón.";
             }
         }
+        else if (habitacion == 9)
+        {
+            infoText.Text = "Cocinero: Llevo horas intentando recordar el ingrediente especial de esta receta... Sin él no puedo terminar el plato. Y sin el plato... mejor ni pensarlo.";
+            habladoCocinero = true;
+        }
+        else
+        {
+            infoText.Text = "No hay nadie en la habitación";
+        }
     }    
     void btnRecoger_Clicked(object sender, EventArgs e)
     {
         if(habitacion == 6 && llaveVista)
         {
             infoText.Text = "No puedo robar la llave mientras él esté aquí."; 
+        }
+        else if (habitacion == 3 && libroVisto)
+        {
+            infoText.Text = "Recoges el libro de recetas. Pesa más de lo que esperabas. Prefieres no pensar en por qué.";
+            habLibro = -1;
+            itemJugador = 1;
+            ActualizarVista();
         }
         else
         {
@@ -276,6 +332,16 @@ public partial class GamePage : ContentPage
     }    
     void btnUsar_Clicked(object sender, EventArgs e)
     {
-
+        if (habitacion == 9 && itemJugador == 1)
+        {
+            infoText.Text = "Le tiendes el libro al cocinero. Lo hojea frenéticamente hasta encontrar la página. Sus ojos brillan de una forma que te incomoda. \"¡Por fin! ¡Ahora sí podremos comer!\" No preguntas qué lleva la receta.";
+            habLibro = -1;
+            itemJugador = -1;
+            comidaHecha = true;
+        }
+        else
+        {
+            infoText.Text = "No tengo nada útil que usar aquí.";
+        }
     }
 }
