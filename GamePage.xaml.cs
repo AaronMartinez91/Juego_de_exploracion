@@ -92,6 +92,8 @@ public partial class GamePage : ContentPage
     bool gatoUsado = false;
     bool tioHabladoLibro = false;
     bool habladoTioPluma = false;
+    bool camaraObservada = false;
+    bool camaraRecogerIntentado = false;
 
     public GamePage()
 	{
@@ -226,6 +228,14 @@ public partial class GamePage : ContentPage
         {
             infoText.Text = "Oyes un revuelo al otro lado de la puerta. Algo se mueve ahí dentro. Quizás deberías observar antes de entrar.";
         }
+        else if (habitacion == 7 && (!camaraObservada || !camaraRecogerIntentado))
+        {
+            infoText.Text = "Algo te dice que deberías echar un vistazo antes de marcharte.";
+        }
+        else if (habitacion == 7 && camaraObservada && camaraRecogerIntentado)
+        {
+            infoText.Text = "Empujas la puerta. No se mueve. Oyes pasos al otro lado. La puerta se abre desde fuera. Tus tíos llenan el marco, uno a cada lado, con esa sonrisa que ya conoces. \"Qué maravilla\", dice tu tío suavemente. \"Solito has encontrado el sitio.\" Tu tía se relame. \"Ya teníamos ganas de jugar... y de probar una receta nueva. El ingrediente secreto siempre es el más difícil de conseguir.\"";
+        }
         else
         {
             habitacion = mapa[habitacion][2];
@@ -350,6 +360,15 @@ public partial class GamePage : ContentPage
         {
             infoText.Text = "El balcón está vacío. Una extraña calma inunda el lugar.";
         }
+        else if (habitacion == 7 && !camaraObservada)
+        {
+            infoText.Text = "La habitación huele a cuero y a algo más que prefieres no identificar. Hay objetos colgados en las paredes cuya función intuyes pero prefieres no confirmar. Hay una silla en el centro con correas. Varios cajones cerrados con llave. Una estantería con frascos etiquetados a mano. No lees las etiquetas.";
+            camaraObservada = true;
+        }
+        else if (habitacion == 7 && camaraObservada)
+        {
+            infoText.Text = "No quieres seguir aquí. Ya has visto suficiente.";
+        }
         else
         {
             infoText.Text = "No observas nada relevante";
@@ -413,6 +432,10 @@ public partial class GamePage : ContentPage
         {
             infoText.Text = "Tu tía levanta la vista del plato por un instante. Tiene algo en la comisura de los labios que prefieres no identificar. Emite un sonido gutural que interpretas como un saludo y vuelve a hundirse en el plato. El tenedor apenas toca la comida.";
         }
+        else if (habitacion == 7)
+        {
+            infoText.Text = "No hay nadie aquí. Por suerte.";
+        }
         else
         {
             infoText.Text = "No hay nadie en la habitación";
@@ -465,6 +488,15 @@ public partial class GamePage : ContentPage
         {
             infoText.Text = "El gato se retuerce inquieto entre tus brazos. Algo en esta habitación le llama la atención. Quizás deberías observar.";
         }
+        else if (habitacion == 7 && !camaraRecogerIntentado)
+        {
+            infoText.Text = "Extiendes la mano hacia uno de los objetos y la retiras de inmediato. Hay cosas que una vez tocas no puedes dejar de sentir. Decides que esto no es para ti.";
+            camaraRecogerIntentado = true;
+        }
+        else if (habitacion == 7 && camaraRecogerIntentado)
+        {
+            infoText.Text = "Con una vez es más que suficiente. No vas a repetirlo.";
+        }
         else
         {
             infoText.Text = "No hay nada que recoger. Tal vez deberías probar a observar.";
@@ -496,6 +528,20 @@ public partial class GamePage : ContentPage
             habPluma = -1;
             ActualizarVista();
             infoText.Text = "Le tiendes la pluma a tu tío. La coge sin decir nada, con una sonrisa que no llega a sus ojos. Se inclina sobre el papel y empieza a escribir. No quieres saber qué.";
+        }
+        else if (habitacion == 5 && itemJugador == 0 && objetivo == 3 && puertaCamaraVista)
+        {
+            puertaCamaraAbierta = true;
+            ActualizarVista();
+            infoText.Text = "Introduces la llave en la cerradura. Un clic seco. La puerta cede. Al otro lado, oscuridad.";
+        }
+        else if (habitacion == 5 && itemJugador == 0 && objetivo == 3 && !puertaCamaraVista)
+        {
+            infoText.Text = "Tienes una llave pero no sabes dónde encaja. Quizás deberías observar mejor esta habitación.";
+        }
+        else if (habitacion == 7)
+        {
+            infoText.Text = "No. Rotundamente no.";
         }
         else
         {
