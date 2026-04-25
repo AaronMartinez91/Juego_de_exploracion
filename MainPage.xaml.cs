@@ -8,18 +8,47 @@
         {
             InitializeComponent();
         }
-
-        private void OnCounterClicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            count++;
+            base.OnAppearing();
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
+            btnContinuar.IsEnabled = File.Exists(ruta);
         }
+
+        private async void btnNuevaPartida_Clicked(object sender, EventArgs e)
+        {
+            string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
+
+            if (File.Exists(ruta))
+            {
+                bool confirmar = await DisplayAlert(
+                    "Partida existente",
+                    "Ya tienes una partida guardada. ¿Quieres borrarla y empezar de nuevo?",
+                    "Sí, empezar de nuevo",
+                    "No, cancelar");
+
+                if (!confirmar)
+                { 
+                    return;
+                }
+
+                File.Delete(ruta);
+            }
+
+            await Shell.Current.GoToAsync("Game");
+        }
+
+        private async void btnContinuar_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("Game");
+        }
+
+        private async void btnAcercaDe_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("about");
+        }
+
     }
 
 }

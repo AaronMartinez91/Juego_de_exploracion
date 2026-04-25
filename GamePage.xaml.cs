@@ -97,8 +97,15 @@ public partial class GamePage : ContentPage
 
     public GamePage()
 	{
-		InitializeComponent();        
-	}
+        InitializeComponent();
+
+        // La carga de partida se ejecuta al crear la página
+        string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
+        if (File.Exists(ruta))
+        {
+            CargarPartida();
+        }
+    }
 
     protected override void OnAppearing()
     {
@@ -109,6 +116,7 @@ public partial class GamePage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+        GuardarPartida();
     }
 
     void ActualizarVista()
@@ -205,12 +213,14 @@ public partial class GamePage : ContentPage
     {
         habitacion = mapa[habitacion][0];
         ActualizarVista();
+        GuardarPartida();
     }
 
     void btnSur_Clicked(object sender, EventArgs e)
     {
         habitacion = mapa[habitacion][1];
         ActualizarVista();
+        GuardarPartida();
     }
 
     void btnEste_Clicked(object sender, EventArgs e)
@@ -241,6 +251,7 @@ public partial class GamePage : ContentPage
             habitacion = mapa[habitacion][2];
             ActualizarVista();
         }
+        GuardarPartida();
     }
 
     void btnOeste_Clicked(object sender, EventArgs e)
@@ -259,7 +270,7 @@ public partial class GamePage : ContentPage
             habitacion = mapa[habitacion][3];
             ActualizarVista();
         }
-            
+        GuardarPartida();
     }
 
     // Botones de acciones
@@ -546,6 +557,185 @@ public partial class GamePage : ContentPage
         else
         {
             infoText.Text = "No tengo nada útil que usar aquí.";
+        }
+    }
+
+    // Sistema de guardado
+    void GuardarPartida()
+    {
+        string linea = $"{habitacion},{objetivo},{itemJugador}," +
+                       $"{habTio},{habTia},{habCocinero}," +
+                       $"{habLlave},{habLibro},{habGato},{habPluma}," +
+                       $"{(libroVisto ? 1 : 0)},{(llaveVista ? 1 : 0)},{(gatoVisto ? 1 : 0)},{(pajaroVisto ? 1 : 0)}," +
+                       $"{(tiaVista ? 1 : 0)},{(habladoCocinero ? 1 : 0)},{(comidaHecha ? 1 : 0)},{(tioEscribiendo ? 1 : 0)}," +
+                       $"{(puertaCamaraVista ? 1 : 0)},{(puertaCamaraAbierta ? 1 : 0)},{(gatoUsado ? 1 : 0)}," +
+                       $"{(tioHabladoLibro ? 1 : 0)},{(habladoTioPluma ? 1 : 0)}," +
+                       $"{(camaraObservada ? 1 : 0)},{(camaraRecogerIntentado ? 1 : 0)}";
+
+        string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
+        FileStream stream = new FileStream(ruta, FileMode.Create);
+        StreamWriter writer = new StreamWriter(stream);
+        writer.WriteLine(linea);
+        writer.Close();
+        stream.Close();
+    }
+
+    // Sistema de carga
+    void CargarPartida()
+    {
+        string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
+        FileStream stream = new FileStream(ruta, FileMode.Open);
+        StreamReader reader = new StreamReader(stream);
+        string linea = reader.ReadLine();
+        reader.Close();
+        stream.Close();
+
+        string[] datos = linea.Split(',');
+
+        habitacion = int.Parse(datos[0]);
+        objetivo = int.Parse(datos[1]);
+        itemJugador = int.Parse(datos[2]);
+        habTio = int.Parse(datos[3]);
+        habTia = int.Parse(datos[4]);
+        habCocinero = int.Parse(datos[5]);
+        habLlave = int.Parse(datos[6]);
+        habLibro = int.Parse(datos[7]);
+        habGato = int.Parse(datos[8]);
+        habPluma = int.Parse(datos[9]);
+
+        if (datos[10] == "1")
+        {
+            libroVisto = true;
+        }
+        else
+        {
+            libroVisto = false;
+        }
+
+        if (datos[11] == "1")
+        {
+            llaveVista = true;
+        }
+        else
+        {
+            llaveVista = false;
+        }
+
+        if (datos[12] == "1")
+        {
+            gatoVisto = true;
+        }
+        else
+        {
+            gatoVisto = false;
+        }
+
+        if (datos[13] == "1")
+        {
+            pajaroVisto = true;
+        }
+        else
+        {
+            pajaroVisto = false;
+        }
+
+        if (datos[14] == "1")
+        {
+            tiaVista = true;
+        }
+        else
+        {
+            tiaVista = false;
+        }
+
+        if (datos[15] == "1")
+        {
+            habladoCocinero = true;
+        }
+        else
+        {
+            habladoCocinero = false;
+        }
+
+        if (datos[16] == "1")
+        {
+            comidaHecha = true;
+        }
+        else
+        {
+            comidaHecha = false;
+        }
+
+        if (datos[17] == "1")
+        {
+            tioEscribiendo = true;
+        }
+        else
+        {
+            tioEscribiendo = false;
+        }
+
+        if (datos[18] == "1")
+        {
+            puertaCamaraVista = true;
+        }
+        else
+        {
+            puertaCamaraVista = false;
+        }
+
+        if (datos[19] == "1")
+        {
+            puertaCamaraAbierta = true;
+        }
+        else
+        {
+            puertaCamaraAbierta = false;
+        }
+
+        if (datos[20] == "1")
+        {
+            gatoUsado = true;
+        }
+        else
+        {
+            gatoUsado = false;
+        }
+
+        if (datos[21] == "1")
+        {
+            tioHabladoLibro = true;
+        }
+        else
+        {
+            tioHabladoLibro = false;
+        }
+
+        if (datos[22] == "1")
+        {
+            habladoTioPluma = true;
+        }
+        else
+        {
+            habladoTioPluma = false;
+        }
+
+        if (datos[23] == "1")
+        {
+            camaraObservada = true;
+        }
+        else
+        {
+            camaraObservada = false;
+        }
+
+        if (datos[24] == "1")
+        {
+            camaraRecogerIntentado = true;
+        }
+        else
+        {
+            camaraRecogerIntentado = false;
         }
     }
 }
