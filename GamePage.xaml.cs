@@ -94,6 +94,7 @@ public partial class GamePage : ContentPage
     bool habladoTioPluma = false;
     bool camaraObservada = false;
     bool camaraRecogerIntentado = false;
+    bool porcheMostrado = false;
 
     public GamePage()
 	{
@@ -139,13 +140,25 @@ public partial class GamePage : ContentPage
         // Resetear visibilidad de todo lo opcional antes de comprobar
         imgPersonaje.IsVisible = false;
         imgItemHabitacion.IsVisible = false;
-        imgItemJugador.IsVisible = false;
+        imgItemJugador.Source = "swap_bag.png";
 
-        // Mostrar texto de dónde se encuentra el jugador.
-        infoText.Text = "Entras en " + nombresHabitacion[habitacion] + ".";
+        // Mostrar texto de dónde se encuentra el jugador. (Texto especial introductorio + actualización en el porche)
+        if (habitacion == 1 && !porcheMostrado)
+        {
+            infoText.Text = "Llevas diez minutos parado frente a la mansión sin moverte. Tus tíos te llamaron hace tres días. 'Ven a visitarnos', dijeron. Sin más explicación. Siempre han sido así... Amables en la superficie, con esa sonrisa que dura un segundo de más. Sabes que ocultan algo aquí dentro. Siempre lo has sabido. Respiras hondo y empujas la puerta.";
+            porcheMostrado = true;
+        }
+        else if (habitacion == 1)
+        {
+            infoText.Text = "Vuelves al porche. Algo te dice que deberías irte, pero algo más fuerte te atrapa a seguir aquí.";
+        }
+        else
+        {
+            infoText.Text = "Entras en " + nombresHabitacion[habitacion] + ".";
+        }
 
         // mostrar personaje en las habitaciones
-        if(habTio == habitacion)
+        if (habTio == habitacion)
         {
             imgPersonaje.Source = "p02_senyor.png";
             imgPersonaje.IsVisible = true;
@@ -187,22 +200,18 @@ public partial class GamePage : ContentPage
         if(itemJugador == 0)
         {
             imgItemJugador.Source = "i01_llave.png";
-            imgItemJugador.IsVisible = true;
         }
         if(itemJugador == 1)
         {
             imgItemJugador.Source = "i04_libro.png";
-            imgItemJugador.IsVisible = true;
         }
         if(itemJugador == 2)
         {
             imgItemJugador.Source = "i02_gato.png";
-            imgItemJugador.IsVisible = true;
         }
         if(itemJugador == 3)
         {
             imgItemJugador.Source = "i03_pluma.png";
-            imgItemJugador.IsVisible = true;
         }
 
     }
@@ -379,6 +388,14 @@ public partial class GamePage : ContentPage
         else if (habitacion == 7 && camaraObservada)
         {
             infoText.Text = "No quieres seguir aquí. Ya has visto suficiente.";
+        }
+        else if (habitacion == 11 && objetivo == 2)
+        {
+            infoText.Text = "Entras despacio. El olor te golpea antes que nada. Las sábanas están retorcidas y hay manchas oscuras en el colchón que prefieres no examinar de cerca. Algo pegajoso en el suelo brilla levemente bajo la luz. Hay cosas que es mejor no investigar.";
+        }
+        else if (habitacion == 13)
+        {
+            infoText.Text = "Todo parece normal a primera vista. Demasiado normal. El jabón está perfectamente colocado, las toallas dobladas con una precisión casi quirúrgica. Entonces ves el espejo. Alguien ha escrito algo en el vapor con el dedo. Las letras ya casi se han borrado pero puedes leer: 'sal'. No sabes cuándo fue escrito.";
         }
         else
         {
@@ -570,7 +587,8 @@ public partial class GamePage : ContentPage
                        $"{(tiaVista ? 1 : 0)},{(habladoCocinero ? 1 : 0)},{(comidaHecha ? 1 : 0)},{(tioEscribiendo ? 1 : 0)}," +
                        $"{(puertaCamaraVista ? 1 : 0)},{(puertaCamaraAbierta ? 1 : 0)},{(gatoUsado ? 1 : 0)}," +
                        $"{(tioHabladoLibro ? 1 : 0)},{(habladoTioPluma ? 1 : 0)}," +
-                       $"{(camaraObservada ? 1 : 0)},{(camaraRecogerIntentado ? 1 : 0)}";
+                       $"{(camaraObservada ? 1 : 0)},{(camaraRecogerIntentado ? 1 : 0)}," +
+                       $"{(porcheMostrado ? 1 : 0)}";
 
         string ruta = System.IO.Path.Combine(FileSystem.AppDataDirectory, "partida.txt");
         FileStream stream = new FileStream(ruta, FileMode.Create);
@@ -736,6 +754,15 @@ public partial class GamePage : ContentPage
         else
         {
             camaraRecogerIntentado = false;
+        }
+
+        if (datos[25] == "1")
+        {
+            porcheMostrado = true;
+        }
+        else
+        {
+            porcheMostrado = false;
         }
     }
 }

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="B2ACT2Juego_de_exploracion.GamePage"
-             Title="GamePage">
+             Title="GamePage"
+             Shell.NavBarIsVisible="False">
     <!-- Defino la parte de espacio que ocupa cada hijo el en grid -->
     <Grid RowDefinitions="3*, *, 1*, 2*"
           Padding="10"
@@ -152,13 +153,20 @@
 
             </Grid>
 
-            <Image Grid.Column="1"
-                   x:Name="imgItemJugador"
-                   Source="i01_llave.png"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   IsVisible="False"/>
-
+            <Border Grid.Column="1"
+                    Stroke="#D0D0D0"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 4"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="80"
+                    HeightRequest="80"> 
+                <Image x:Name="imgItemJugador"
+                       Source="swap_bag.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="True"/>
+            </Border>
         </Grid>
 
     </Grid>

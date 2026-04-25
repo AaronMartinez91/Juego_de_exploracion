@@ -9,6 +9,7 @@
             Routing.RegisterRoute("about", typeof(About));
             Routing.RegisterRoute("Game", typeof(GamePage));
             Routing.RegisterRoute("Main", typeof(MainPage));
+            Routing.RegisterRoute("NewGame", typeof(NuevaPartidaModal));
         }
     }
 }

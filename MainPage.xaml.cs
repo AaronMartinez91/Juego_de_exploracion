@@ -22,21 +22,12 @@
 
             if (File.Exists(ruta))
             {
-                bool confirmar = await DisplayAlert(
-                    "Partida existente",
-                    "Ya tienes una partida guardada. ¿Quieres borrarla y empezar de nuevo?",
-                    "Sí, empezar de nuevo",
-                    "No, cancelar");
-
-                if (!confirmar)
-                { 
-                    return;
-                }
-
-                File.Delete(ruta);
+                await Shell.Current.GoToAsync("NewGame");
             }
-
-            await Shell.Current.GoToAsync("Game");
+            else
+            {
+                await Shell.Current.GoToAsync("Game");
+            }
         }
 
         private async void btnContinuar_Clicked(object sender, EventArgs e)
