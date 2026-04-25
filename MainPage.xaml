@@ -17,15 +17,30 @@
                                  Spacing="8">
 
                 <Label Text="LA MANSIÓN"
+                       FontFamily="Cinzel"
                        FontSize="36"
                        FontAttributes="Bold"
                        TextColor="White"
-                       HorizontalTextAlignment="Center"/>
+                       HorizontalTextAlignment="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="Black"
+                                Offset="2,2"
+                                Radius="8"
+                                Opacity="1"/>
+                    </Label.Shadow>
+                </Label>
 
                 <Label Text="— un juego de exploración —"
                        FontSize="14"
-                       TextColor="#CCBBAA"
-                       HorizontalTextAlignment="Center"/>
+                       TextColor="White"
+                       HorizontalTextAlignment="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="Black"
+                                Offset="0,0"
+                                Radius="20"
+                                Opacity="1"/>
+                    </Label.Shadow>
+                </Label>
 
             </VerticalStackLayout>
 

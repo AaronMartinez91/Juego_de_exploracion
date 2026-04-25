@@ -232,7 +232,7 @@ public partial class GamePage : ContentPage
         GuardarPartida();
     }
 
-    void btnEste_Clicked(object sender, EventArgs e)
+    async void btnEste_Clicked(object sender, EventArgs e)
     {
         if(habitacion == 10 && objetivo == 1 && !comidaHecha && !tiaVista)
         {
@@ -253,7 +253,7 @@ public partial class GamePage : ContentPage
         }
         else if (habitacion == 7 && camaraObservada && camaraRecogerIntentado)
         {
-            infoText.Text = "Empujas la puerta. No se mueve. Oyes pasos al otro lado. La puerta se abre desde fuera. Tus tíos llenan el marco, uno a cada lado, con esa sonrisa que ya conoces. \"Qué maravilla\", dice tu tío suavemente. \"Solito has encontrado el sitio.\" Tu tía se relame. \"Ya teníamos ganas de jugar... y de probar una receta nueva. El ingrediente secreto siempre es el más difícil de conseguir.\"";
+            await Shell.Current.GoToAsync("End");
         }
         else
         {
@@ -382,7 +382,7 @@ public partial class GamePage : ContentPage
         }
         else if (habitacion == 7 && !camaraObservada)
         {
-            infoText.Text = "La habitación huele a cuero y a algo más que prefieres no identificar. Hay objetos colgados en las paredes cuya función intuyes pero prefieres no confirmar. Hay una silla en el centro con correas. Varios cajones cerrados con llave. Una estantería con frascos etiquetados a mano. No lees las etiquetas.";
+            infoText.Text = "La habitación huele a algo que no consigues identificar. Las estanterías están llenas de objetos cubiertos de polvo y telarañas. Cajones cerrados con llave. Frascos con etiquetas escritas a mano que prefieres no leer. En el centro, una vieja silla desvencijada.";
             camaraObservada = true;
         }
         else if (habitacion == 7 && camaraObservada)
@@ -560,6 +560,7 @@ public partial class GamePage : ContentPage
         else if (habitacion == 5 && itemJugador == 0 && objetivo == 3 && puertaCamaraVista)
         {
             puertaCamaraAbierta = true;
+            itemJugador = -1;
             ActualizarVista();
             infoText.Text = "Introduces la llave en la cerradura. Un clic seco. La puerta cede. Al otro lado, oscuridad.";
         }

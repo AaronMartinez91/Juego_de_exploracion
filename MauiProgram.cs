@@ -13,6 +13,7 @@ namespace B2ACT2Juego_de_exploracion
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Cinzel-Regular.ttf", "Cinzel");
                 });
 
 #if DEBUG

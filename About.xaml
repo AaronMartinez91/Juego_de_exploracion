@@ -5,49 +5,49 @@
              Title="Acerca de"
              Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="2*, *">
+    <ScrollView>
+        <Grid RowDefinitions="2*, *">
 
-        <Grid Grid.Row="0">
-            <Image Source="h07_camara_secreta.png"
+            <Grid Grid.Row="0">
+                <Image Source="h07_camara_secreta.png"
                    Aspect="AspectFill"/>
-            <VerticalStackLayout VerticalOptions="Center"
+                <VerticalStackLayout VerticalOptions="Center"
                                  HorizontalOptions="Center"
                                  Spacing="8"
                                  Padding="20">
-                <Label Text="LA MANSIÓN"
+                    <Label Text="LA MANSIÓN"
+                       FontFamily="Cinzel"
                        FontSize="36"
                        FontAttributes="Bold"
                        TextColor="White"
                        HorizontalTextAlignment="Center"/>
-                <Label Text="v1.0 · 2026"
+                    <Label Text="v1.0 · 2026"
                        FontSize="14"
-                       TextColor="#CCBBAA"
                        HorizontalTextAlignment="Center"/>
-            </VerticalStackLayout>
-        </Grid>
+                </VerticalStackLayout>
+            </Grid>
 
-        <VerticalStackLayout Grid.Row="1"
+            <VerticalStackLayout Grid.Row="1"
                              VerticalOptions="Center"
                              HorizontalOptions="Center"
                              Spacing="16"
-                             Padding="40,0">
+                             Padding="40,20">
 
-            <Label Text="Desarrollado por Aarón Martínez"
+                <Label Text="Desarrollado por Aarón Martínez"
                    FontSize="16"
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Center"/>
 
-            <Label Text="Mi primer juego y aplicación desarrollada en .NET MAUI. Un juego de exploración de texto ambientado en una misteriosa mansión."
-                   FontSize="14"
+                <Label Text="Mi primer juego y aplicación desarrollada en .NET MAUI. Un juego de exploración de texto ambientado en una misteriosa mansión."
                    HorizontalTextAlignment="Center"/>
 
-            <Label Text="¿Encontraste algún bug o tienes alguna duda? No dudes en contactarme a través de LinkedIn o GitHub."
-                   FontSize="13"
-                   TextColor="Gray"
+                <Label Text="¿Encontraste algún bug o tienes alguna duda? No dudes en contactarme a través de LinkedIn o GitHub."
+                   TextColor="#808080"
                    HorizontalTextAlignment="Center"/>
 
-        </VerticalStackLayout>
+            </VerticalStackLayout>
 
-    </Grid>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>

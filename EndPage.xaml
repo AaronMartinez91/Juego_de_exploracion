@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="B2ACT2Juego_de_exploracion.EndPage"
+             Shell.NavBarIsVisible="False">
+
+    <Grid BackgroundColor="Transparent">
+
+        <Image Source="end.png"
+               Aspect="AspectFill"/>
+
+        <VerticalStackLayout VerticalOptions="End"
+                             Padding="20,0,20,120">
+            <Label Text="Empujas la puerta. No se mueve. Oyes pasos al otro lado. La puerta se abre desde fuera. Tus tíos llenan el marco, uno a cada lado, con esa sonrisa que ya conoces. &quot;Qué maravilla&quot;, dice tu tío suavemente. &quot;Has encontrado el sitio tú solito.&quot; Tu tía se relame. &quot;Ya teníamos ganas de jugar... y de probar una receta nueva. El ingrediente secreto siempre es el más difícil de conseguir.&quot;"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White">
+                <Label.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="1"/>
+                </Label.Shadow>
+            </Label>
+        </VerticalStackLayout>
+
+        <Button VerticalOptions="End"
+                HorizontalOptions="Fill"
+                Margin="30"
+                x:Name="btnFin"
+                Text="FIN"
+                BackgroundColor="Black"
+                Clicked="btnFin_Clicked"/>
+
+    </Grid>
+
+</ContentPage>
