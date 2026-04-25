@@ -8,6 +8,8 @@ public partial class GamePage : ContentPage
     IAudioPlayer playerRonquido;
     IAudioPlayer playerMaullido;
     IAudioPlayer playerPajaro;
+    IAudioPlayer playerLlave;
+    IAudioPlayer playerPuerta;
 
     // El jugador empieza siempre en la habitación 1
     int habitacion = 1;
@@ -535,7 +537,7 @@ public partial class GamePage : ContentPage
             infoText.Text = "No hay nadie en la habitación";
         }
     }    
-    void btnRecoger_Clicked(object sender, EventArgs e)
+    async void btnRecoger_Clicked(object sender, EventArgs e)
     {
         if(habitacion == 6 && llaveVista && !tioEscribiendo && habLlave == 6)
         {
@@ -546,6 +548,8 @@ public partial class GamePage : ContentPage
             habLlave = -1;
             itemJugador = 0;
             objetivo = 3;
+            playerLlave = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("key_pickup.mp3"));
+            playerLlave.Play();
             ActualizarVista();
             infoText.Text = "Con tu tío absorto en el papel, deslizas la llave hacia ti sin hacer ruido. La guardas rápido. Ni siquiera levanta la vista.";
         }
@@ -596,7 +600,7 @@ public partial class GamePage : ContentPage
             infoText.Text = "No hay nada que recoger. Tal vez deberías probar a observar.";
         }
     }    
-    void btnUsar_Clicked(object sender, EventArgs e)
+    async void btnUsar_Clicked(object sender, EventArgs e)
     {
         if (habitacion == 9 && itemJugador == 1)
         {
@@ -627,6 +631,8 @@ public partial class GamePage : ContentPage
         {
             puertaCamaraAbierta = true;
             itemJugador = -1;
+            playerPuerta = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("creaky_door.wav"));
+            playerPuerta.Play();
             ActualizarVista();
             infoText.Text = "Introduces la llave en la cerradura. Un clic seco. La puerta cede. Al otro lado, oscuridad.";
         }
