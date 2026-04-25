@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
 
 namespace B2ACT2Juego_de_exploracion
 {
@@ -16,8 +17,10 @@ namespace B2ACT2Juego_de_exploracion
                     fonts.AddFont("Cinzel-Regular.ttf", "Cinzel");
                 });
 
+            builder.Services.AddSingleton(AudioManager.Current);
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

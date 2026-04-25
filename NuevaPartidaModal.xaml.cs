@@ -19,7 +19,7 @@ namespace B2ACT2Juego_de_exploracion
             {
                 File.Delete(ruta);
             }
-            await Shell.Current.GoToAsync("Game");
+            await Shell.Current.GoToAsync("//MainPage/Game");
         }
     }
 }

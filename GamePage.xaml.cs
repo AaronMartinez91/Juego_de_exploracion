@@ -1,7 +1,14 @@
 namespace B2ACT2Juego_de_exploracion;
+using Plugin.Maui.Audio;
 
 public partial class GamePage : ContentPage
 {
+    // Audio
+    IAudioPlayer playerAmbiente;
+    IAudioPlayer playerRonquido;
+    IAudioPlayer playerMaullido;
+    IAudioPlayer playerPajaro;
+
     // El jugador empieza siempre en la habitación 1
     int habitacion = 1;
 
@@ -108,19 +115,29 @@ public partial class GamePage : ContentPage
         }
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        if (playerAmbiente == null)
+        {
+            playerAmbiente = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("creeping_ambience.mp3"));
+            playerAmbiente.Volume = 0.5;
+            playerAmbiente.Loop = true;
+            playerAmbiente.Play();
+        }
+
         ActualizarVista();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+        playerAmbiente?.Stop();
         GuardarPartida();
     }
 
-    void ActualizarVista()
+    async void ActualizarVista()
     {
         // Cambiar imagen de la habitación
         imgHabitacion.Source = imagenesHabitacion[habitacion];
@@ -212,6 +229,55 @@ public partial class GamePage : ContentPage
         if(itemJugador == 3)
         {
             imgItemJugador.Source = "i03_pluma.png";
+        }
+
+        // Sonidos contextuales
+        if (habitacion == 10 && objetivo == 1)
+        {
+            if (playerRonquido == null)
+            {
+                playerRonquido = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("snoring.mp3"));
+                playerRonquido.Volume = 1.0;
+                playerRonquido.Loop = true;
+                playerRonquido.Play();
+            }
+        }
+        else
+        {
+            playerRonquido?.Stop();
+            playerRonquido = null;
+        }
+
+        if (habitacion == 8 && objetivo == 2 && !gatoUsado && itemJugador != 2 && habladoTioPluma)
+        {
+            if (playerMaullido == null)
+            {
+                playerMaullido = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("meow.mp3"));
+                playerMaullido.Loop = true;
+                playerMaullido.Volume = 1.0;
+                playerMaullido.Play();
+            }
+        }
+        else
+        {
+            playerMaullido?.Stop();
+            playerMaullido = null;
+        }
+
+        if (habitacion == 12 && objetivo == 2 && !gatoUsado)
+        {
+            if (playerPajaro == null)
+            {
+                playerPajaro = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("birdSound.wav"));
+                playerPajaro.Loop = true;
+                playerPajaro.Volume = 1.0;
+                playerPajaro.Play();
+            }
+        }
+        else
+        {
+            playerPajaro?.Stop();
+            playerPajaro = null;
         }
 
     }
