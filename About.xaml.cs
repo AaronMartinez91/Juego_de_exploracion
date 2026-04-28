@@ -6,4 +6,10 @@ public partial class About : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    protected override bool OnBackButtonPressed()
+    {
+        Shell.Current.GoToAsync("Main");
+        return true;
+    }
 }

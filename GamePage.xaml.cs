@@ -492,7 +492,7 @@ public partial class GamePage : ContentPage
             }
             else if(!tioEscribiendo)
             {
-                infoText.Text = "Tu tío sonríe. \"Ah, la llavecita...\" La tapa con la mano sin dejar de mirarte. \"No es nada importante.\" Hace una pausa. \"Oye, ¿no tendrás algo con qué escribir? No encuentro ni un bolígrafo en esta casa.\"";
+                infoText.Text = "Tu tío sonríe. \"Ah, la llavecita...\" La tapa con la mano sin dejar de mirarte. \"No es nada importante.\" Hace una pausa. \"Oye, ¿no tendrás algo con qué escribir? No encuentro ni una triste pluma en esta casa.\"";
                 habladoTioPluma = true;
             }
             else
@@ -512,7 +512,7 @@ public partial class GamePage : ContentPage
             }
             else if (!comidaHecha)
             {
-                infoText.Text = "Cocinero: Llevo horas intentando recordar el ingrediente especial de esta receta... Sin él no puedo terminar el plato. Y sin el plato... mejor ni pensarlo.";
+                infoText.Text = "Cocinero: Llevo horas intentando recordar el ingrediente especial de esta receta... Sin él no puedo terminar el plato. Y sin el plato... mejor ni pensarlo. ¿Dónde habré dejado ese maldito libro de recetas 'especiales' del señor?";
                 habladoCocinero = true;
             }
             else
